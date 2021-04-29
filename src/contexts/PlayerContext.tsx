@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useState } from 'react';
+import { createContext, ReactNode, useContext, useState } from 'react';
 
 type Episode = {
     title: string;
@@ -13,8 +13,13 @@ type PlayerContextData = {
     currentEpisodeIndex: number;
     isPlaying: boolean;
     play: (episode: Episode) => void;
+    playList: (list: Episode[], index: number) => void;
+    playNext: () => void;
+    playPrevious: () => void;
     togglePlay: () => void;
     setPlayingState: (state: boolean) => void;
+    hasNext: boolean;
+    hasPrevious: boolean;
 }
 
 export const PlayerContext = createContext({} as PlayerContextData); // Fazendo um atribuição ao OBJ vaziu para que ele contenha a estrutura da tipagem do PlayerContextData, tipado o PlayerContext com a tipagem do PlayerContextData, facilitando na hora de manipulação dos dados nos componentes.
@@ -36,6 +41,12 @@ export function PlayerContextProvider({ children } : PlayerContextProviderProps)
     setIsPlaying(true);
   }
 
+  function playList(list: Episode[], index: number){
+    setEpisodeList(list);
+    setCurrentEpisodeIndex(index);
+    setIsPlaying(true);
+  }
+
   function togglePlay(){
     setIsPlaying(!isPlaying);
   }
@@ -44,16 +55,42 @@ export function PlayerContextProvider({ children } : PlayerContextProviderProps)
     setIsPlaying(state);
   }
 
+  const hasPrevious = currentEpisodeIndex > 0;
+  const hasNext = (currentEpisodeIndex + 1) < episodeList.length;
+
+  function playNext(){
+    const nextEpisodeIndex = currentEpisodeIndex + 1;
+
+    if(hasNext){
+      setCurrentEpisodeIndex(currentEpisodeIndex + 1)
+    }
+  }
+  
+  function playPrevious(){
+    if(hasPrevious){
+      setCurrentEpisodeIndex(currentEpisodeIndex - 1);
+    }
+  }
+
   return (
     <PlayerContext.Provider value={{ 
         episodeList, 
         currentEpisodeIndex, 
-        play, 
+        play,
+        playList,
+        playNext,
+        playPrevious, 
         isPlaying, 
         togglePlay, 
-        setPlayingState
+        setPlayingState,
+        hasNext,
+        hasPrevious,
     }}>
         {children}
     </PlayerContext.Provider>
   )
+}
+
+export const usePlayer = () => {
+  return useContext(PlayerContext);
 }
