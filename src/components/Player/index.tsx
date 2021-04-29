@@ -41,7 +41,6 @@ export function Player(){
 
     function setupProgressListener() {
       audioRef.current.currentTime = 0;
-  
       audioRef.current.addEventListener('timeupdate', () => {
         setProgress(Math.floor(audioRef.current.currentTime));
       });
@@ -52,8 +51,8 @@ export function Player(){
       setProgress(amount);
     }
 
-    function handleEpisodeEnded(){
-      if (hasNext){
+    function handleEpisodeEnded() {
+      if (hasNext) {
         playNext();
       } else {
         clearPlayerState();
