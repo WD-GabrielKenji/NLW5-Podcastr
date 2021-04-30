@@ -1,9 +1,8 @@
-<p align="center" id="introducao">
+<p align="center">
    <img src="./public/logo.png" alt="Move It" width="300"/>
 </p>
 
 <p align="center">
- <a href="#introducao">Introdução</a> •
  <a href="#projeto">Projeto</a> •
  <a href="#tecnologias">Tecnologias Utilizadas</a> • 
  <a href="#execucao">Como Executar</a> • 
